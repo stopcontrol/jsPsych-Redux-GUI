@@ -5,6 +5,7 @@ import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import TrialForm from '../../containers/TimelineNode/TrialForm';
 
 import CloseDrawer from 'material-ui/svg-icons/navigation/close';
 import OpenDrawer from 'material-ui/svg-icons/navigation/chevron-left';
@@ -48,6 +49,7 @@ export default class TimelineNodeEditorDrawer extends React.Component {
 							onTouchTap={this.props.closeTimelineEditorCallback}
 							>{(this.props.open) ? <CloseDrawer hoverColor={CloseDrawerHoverColor}/> : null}</IconButton>
 							<Subheader>Timeline/Trial Editor</Subheader>
+							<TrialForm id={this.props.id} pluginType={this.props.pluginType} />
 						</div>
 						<Divider />
 					</div> : null}

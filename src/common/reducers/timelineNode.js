@@ -30,6 +30,7 @@ import * as utils from '../constants/utils';
 
 export const DEFAULT_TIMELINE_NAME = 'Untitled Timeline';
 export const DEFAULT_TRIAL_NAME = 'Untitled Trial';
+export const DEFAULT_PLUGIN_TYPE = 'text';
 
 const initState = {
 	// id of which is being previewed/editted
@@ -61,6 +62,8 @@ export default function(state=initState, action) {
 			return onToggle(state, action);
 		case actionTypes.SET_COLLAPSED:
 			return setCollapsed(state, action);
+		case actionTypes.CHANGE_PLUGIN_TYPE:
+			return changePlugin(state, action);
 		default:
 			return state;
 	}
@@ -139,7 +142,7 @@ function copyTimeline(timeline) {
 }
 
 function createTrial(id, parent=null, name=DEFAULT_TRIAL_NAME,
-	enabled=true, parameters={}) {
+	enabled=true, parameterValue={}, pluginType=DEFAULT_PLUGIN_TYPE) {
 
 	return {
 		id: id,
@@ -147,12 +150,14 @@ function createTrial(id, parent=null, name=DEFAULT_TRIAL_NAME,
 		name: name,
 		parent: parent,
 		enabled: enabled,
-		parameters: parameters
+		parameterValue: parameterValue,
+		pluginType: pluginType
 	};
 }
 
 function copyTrial(trial) {
-	return createTrial(trial.id, trial.parent, trial.name, trial.enabled, trial.parameters);
+	return createTrial(trial.id, trial.parent, trial.name, 
+		trial.enabled, trial.parameterValue, trial.pluginType);
 }
 
 /*
@@ -386,6 +391,17 @@ function setCollapsed(state, action) {
  	timeline.collapsed = !timeline.collapsed;
 
 	new_state[timeline.id] = timeline;
+
+	return new_state;
+}
+
+function changePlugin(state, id, pluginType) {
+	let node = getNodeById(state, id);
+
+	let new_state = Object.assign({}, state);
+
+	copyTrial(node); 
+	new_state[node.pluginType] = pluginType; 
 
 	return new_state;
 }
